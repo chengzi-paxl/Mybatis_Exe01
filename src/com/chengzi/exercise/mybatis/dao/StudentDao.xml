@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chengzi.exercise.mybatis.dao.StudentDao">
+
+    <insert id="insertInfo">
+        insert into tbl_student value (#{studentID},#{studentName},#{gender},#{age})
+    </insert>
+
+    <select id="selectByCon01" resultType="Student">
+        select * from tbl_student
+
+        <where>
+            <if test="gender!=null and gender!=''">
+                and gender=#{gender}
+            </if>
+
+            <if test="studentName!=null and studentName !=''">
+                and studentName like '%' #{studentName} '%'
+            </if>
+
+        </where>
+    </select>
+
+    <select id="queryInName" resultType="Student">
+        select * from tbl_student
+
+        where studentName in
+
+        <foreach collection="array" open="(" close=")" item="name" separator=",">
+            #{name}
+        </foreach>
+    </select>
+
+
+    <select id="queryByID" resultType="Student">
+        select * from tbl_student where studentID=#{studentID}
+    </select>
+
+    <select id="queryByInfo" resultType="Student">
+        select * from tbl_student where studentName=#{studentName} and age=#{age}
+    </select>
+
+    <select id="queryByMap" parameterType="map" resultType="Student">
+         select * from tbl_student where studentName=#{name} and gender=#{gender}
+    </select>
+
+    <select id="queryCount" resultType="int">
+        select count(*) from tbl_student
+    </select>
+
+    <select id="selectByCon02" resultType="map">
+
+        select
+        s.studentName,
+        c.classroomName
+        from tbl_student  s
+        join tbl_classroom  c
+        on s.classroomID=c.classroomID
+
+    </select>
+
+    <!--    <resultMap id="stu" type="Student">-->
+    <!--        <id property="" column=""/>-->
+    <!--        <result property="" column=""/>-->
+    <!--        <result property="" column=""/>-->
+    <!--    </resultMap>-->
+
+    <select id="queryList" resultType="map">
+        select * from tbl_student
+    </select>
+
+
+</mapper>
